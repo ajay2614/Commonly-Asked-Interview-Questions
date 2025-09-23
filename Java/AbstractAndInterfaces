@@ -161,3 +161,59 @@ Serialization - conversion of java object to stream of bytes,
 classes which perform serialization implements serializable, now with the instanceOfSerializable, we can check
 if it is serializable and hence perform serialization
 Static fields can not be serialized
+
+
+----------------------------------------------------------------------------------------------------------------------------
+Case 1: Normal variable in abstract class
+
+Child can hide the variable by declaring a new one with the same name.
+
+Parent variable accessed depends on reference type.
+
+Methods can still use the parent variable directly.
+
+abstract class Parent { int x = 10; }
+class Child extends Parent { int x = 20; }
+Parent p = new Child();
+System.out.println(p.x); // 10
+
+Case 2: Normal variable used in final method
+
+Method cannot be overridden.
+
+Variable accessed in the method is always the one in the class where the method is defined (no polymorphism for fields).
+
+abstract class Parent { int y = 10; final void printY() { System.out.println(y); } }
+class Child extends Parent { int y = 20; }
+Parent p = new Child();
+p.printY(); // 10
+
+Case 3: final variable used in non-final method
+
+Variable cannot be reassigned.
+
+Child can declare a new variable with the same name (field hiding).
+
+If method is overridden, it can use child’s variable.
+
+super.varName can access parent’s final variable.
+
+abstract class Parent { final int z = 100; void showZ() { System.out.println(z); } }
+class Child extends Parent { int z = 200; @Override void showZ() { System.out.println(z); System.out.println(super.z); } }
+
+
+Output:
+
+Child z = 200
+Parent z = 100
+
+
+✅ Quick takeaways:
+
+Variables are never overridden, only hidden.
+
+Final variables cannot be reassigned.
+
+Final methods always use variables from their own class.
+
+Non-final methods can use child’s version if overridden.
