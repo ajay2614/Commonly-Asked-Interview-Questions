@@ -217,3 +217,38 @@ Final variables cannot be reassigned.
 Final methods always use variables from their own class.
 
 Non-final methods can use child’s version if overridden.
+
+
+
+In a final method, any calls to overridable methods will execute the child’s overridden versions at runtime
+
+abstract class Parent {
+    public final void finalMethod() {
+        System.out.println("Workflow starts");
+        step(); // will call child’s version
+        System.out.println("Workflow ends");
+    }
+    public abstract void step();
+}
+
+class Child extends Parent {
+    @Override
+    public void step() {
+        System.out.println("Child step executed");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        p.finalMethod();
+    }
+}
+
+Output:
+Workflow starts
+Child step executed
+Workflow ends
+
+Variables → resolved at compile time based on reference type (no polymorphism).
+Methods → resolved at runtime based on actual object type (dynamic dispatch / polymorphism).
