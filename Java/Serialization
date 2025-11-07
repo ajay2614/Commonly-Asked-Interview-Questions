@@ -66,3 +66,34 @@ return byteOutStream.toByteArray();
 
 Finally, the toByteArray method is called on byteOutStream to obtain the serialized object as a byte array. This array
 is then returned by the method.
+
+
+What is a Marker Interface?
+
+A marker interface is an interface that has no methods or fields — it simply marks a class to convey metadata or capability to the JVM or frameworks at runtime.
+
+Examples:
+
+java.io.Serializable
+
+java.lang.Cloneable
+
+java.rmi.Remote
+
+⚙️ How it works (using Serializable as example)
+
+When you serialize an object:
+
+ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("obj.ser"));
+out.writeObject(myObject);
+
+
+The JVM checks:
+
+if (!(obj instanceof Serializable)) {
+    throw new NotSerializableException(obj.getClass().getName());
+}
+
+
+So — it’s literally a runtime check.
+There’s no compile-time enforcement (you can still compile the code), but at runtime, if the object doesn’t implement Serializable, it throws NotSerializableException.
