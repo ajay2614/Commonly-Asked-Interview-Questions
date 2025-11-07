@@ -392,6 +392,158 @@ association where multiple entities are associated with multiple entities.
 If we hit requestmapping instead of getmapping, the code will work but it will create ambiguity and less
 expressive
 
+----Above cheetsheet with examples
+Spring Boot Main Annotations
+
+@SpringBootApplication → Bootstraps the Spring Boot app; combines @Configuration, @EnableAutoConfiguration, @ComponentScan.
+
+@SpringBootApplication
+public class MyApp { public static void main(String[] args){ SpringApplication.run(MyApp.class,args); } }
+
+
+@ComponentScan → Tells Spring which packages to scan for components.
+
+@ComponentScan("com.example.package")
+
+
+@EnableAutoConfiguration → Automatically configures Spring beans based on classpath dependencies.
+
+@Configuration → Marks a class as a source of bean definitions.
+
+@Configuration
+public class AppConfig { @Bean public MyService service(){ return new MyService(); } }
+
+Stereotype Annotations
+
+@Component → Generic Spring-managed component.
+
+@Component
+public class MyComponent {}
+
+
+@Service → Marks a business/service layer class.
+
+@Service
+public class UserService {}
+
+
+@Repository → Marks a DAO/repository class; translates exceptions automatically.
+
+@Repository
+public class UserRepository {}
+
+
+@Controller → Marks MVC controller for returning views.
+
+@RestController → @Controller + @ResponseBody; returns data (JSON/XML).
+
+@RestController
+public class MyRestController {
+    @GetMapping("/hello")
+    public String hello(){ return "Hello"; }  // returned as JSON/plain text
+}
+
+Spring Core Annotations
+
+@Bean → Declares a bean explicitly.
+
+@Bean public MyBean bean(){ return new MyBean(); }
+
+
+@Autowired → Injects dependency automatically.
+
+@Autowired private UserService service;
+
+
+@Qualifier → Selects among multiple beans.
+
+@Autowired @Qualifier("specialService") private UserService service;
+
+
+@Lazy → Initializes bean only when first requested.
+
+@Value → Injects property values.
+
+@Value("${my.property}") private String prop;
+
+
+@PropertySource → Specifies external property files.
+
+@PropertySource("classpath:custom.properties")
+
+
+@ConfigurationProperties → Binds external properties to a class.
+
+@ConfigurationProperties(prefix="mail")
+public class MailConfig { private String from; /*getter/setter*/ }
+
+
+@Profile → Activates bean for specific environment.
+
+@Profile("dev") @Bean public DataSource devDataSource(){ return new H2DataSource(); }
+
+
+@Scope → Sets bean scope: singleton, prototype, request, session, etc.
+
+REST API Annotations
+
+@RequestMapping → Maps request URL & method.
+
+@RequestMapping("/users") public String getUsers(){ return "users"; }
+
+
+@GetMapping / @PostMapping / @PutMapping / @DeleteMapping → Shortcuts for HTTP methods.
+
+@GetMapping("/users") public List<User> getUsers(){ return List.of(); }
+
+
+@RequestBody → Binds request body to method parameter.
+
+@PostMapping("/users")
+public User addUser(@RequestBody User u){ return u; }
+
+
+@PathVariable → Extracts value from URI path.
+
+@GetMapping("/users/{id}")
+public User getUser(@PathVariable int id){ return new User(id); }
+
+
+@RequestParam → Extracts query parameter from URL.
+
+@GetMapping("/search")
+public List<User> search(@RequestParam String name){ return List.of(); }
+
+
+@ControllerAdvice / @ExceptionHandler → Global exception handling.
+
+Spring Data JPA Annotations
+
+@Entity → Marks class as a DB entity.
+
+@Table → Custom table name.
+
+@Column → Custom column mapping.
+
+@Entity @Table(name="users")
+public class User {
+    @Id @GeneratedValue private int id;
+    @Column(name="user_name") private String name;
+}
+
+
+@Transactional → Executes method/class in transaction.
+
+Relationships:
+
+@OneToOne → Single entity mapping.
+
+@OneToMany → One entity → many entities.
+
+@ManyToOne → Many entities → one entity.
+
+@ManyToMany → Many ↔ Many entities.
+
 
 Spring is loosely coupled as eg UserRepo repo = new UserRepo(); in this tightly coupled scenario we ourself are creating
 the object and any change in repo will mean we have to change that as well but let's say we di this by autowiring, now
