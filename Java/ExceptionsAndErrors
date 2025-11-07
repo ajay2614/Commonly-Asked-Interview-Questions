@@ -151,3 +151,66 @@ exception so that our program don't terminate abnormally.
 
 even though we could have written throws with main too, it is not good practice to do so as in that case
 jvm would have terminated program abnormally passing the object to default exception handler.
+
+Spring Exception Handling Notes
+⚙️ @ControllerAdvice
+
+Used to mark a class as a global exception handler in Spring.
+
+Applies to all controllers across the entire application.
+
+Helps centralize exception handling, instead of repeating code in every controller.
+
+Can also be used for:
+
+Global data binding
+
+Adding common model attributes
+
+Global exception handling
+
+👉 Think of it like:
+
+“This class will handle exceptions and shared logic for all controllers.”
+
+🧠 Example:
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(ex.getMessage());
+    }
+}
+
+⚙️ @ExceptionHandler
+
+Used to mark a method that handles a specific exception type.
+
+Can be used inside a single controller or inside a @ControllerAdvice class.
+
+Defines what should happen (e.g., return message or response) when that specific exception is thrown.
+
+👉 Think of it like:
+
+“If this particular exception occurs, call this method to handle it.”
+
+🧠 Example (used inside a controller):
+
+@RestController
+public class UserController {
+
+    @GetMapping("/user/{id}")
+    public String getUser(@PathVariable int id) {
+        if (id <= 0)
+            throw new IllegalArgumentException("Invalid ID");
+        return "User Found";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleInvalidId(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+}
