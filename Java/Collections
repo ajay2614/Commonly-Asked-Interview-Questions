@@ -271,3 +271,82 @@ Defining the size of an array is important because it determines the amount of m
 the array. When you define the size of an array, you are essentially telling the computer how much contiguous memory
 it should reserve to store the elements of the array.
 
+
+
+Marker Interface
+
+Interface with no methods; just a "marker".
+
+Signals capability to JVM/framework at runtime.
+
+Example: Serializable, Cloneable
+
+If class doesn’t implement: runtime error may occur (NotSerializableException).
+
+Comparable
+
+Defines natural ordering of a class.
+
+Implemented inside class using compareTo().
+
+Used by Collections.sort(), TreeSet, etc.
+
+Not a functional interface.
+
+Example:
+
+class Student implements Comparable<Student> {
+    int id; String name;
+    public int compareTo(Student s) { return this.id - s.id; }
+}
+
+Comparator
+
+Defines custom ordering; can be used anywhere.
+
+Implemented outside class or via lambda.
+
+Has compare(T o1, T o2) → functional interface.
+
+Java 8+ enhancements: comparing(), thenComparing(), reversed()
+
+Example:
+
+Comparator<Student> byName = (s1,s2) -> s1.name.compareTo(s2.name);
+list.sort(byName);
+
+Key Differences
+Feature	Comparable	Comparator
+Location	Inside class	Outside class / lambda
+Purpose	Natural order	Custom order
+Methods	compareTo()	compare()
+Functional Intf	No	Yes
+Functional Programming (FP)
+
+Paradigm: computation = evaluation of functions; avoids mutable state.
+
+Key Concepts:
+
+Pure functions → no side effects, same input → same output
+
+Immutability → data cannot change
+
+First-class & higher-order functions → functions as values
+
+Declarative style → describe what, not how
+
+Java 8 features:
+
+Lambda expressions (x -> x*x)
+
+Functional interfaces (Comparator, Function, Predicate)
+
+Streams (map, filter, reduce)
+
+Example:
+
+List<String> names = List.of("Alice","Bob");
+List<String> filtered = names.stream()
+                             .filter(n -> n.startsWith("A"))
+                             .toList();
+
