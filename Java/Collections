@@ -25,6 +25,10 @@ The List implementation classes are LinkedList and ArrayList where as set implem
 TreeSet, HashSet and LinkedHashSet.
 We can get the element of a specified index from the list using the get() method but we cannot in case of set.
 
+TreeSet → Sorted, unique elements (uses TreeMap, ordered).
+HashSet → Unsorted, unique elements (uses HashMap, fastest).
+LinkedHashSet → Insertion-order, unique elements (uses LinkedHashMap).
+
 What would happen if suppose
 ArrayList<Integer> a = new ArrayList<>(2);
 a.add(1)
