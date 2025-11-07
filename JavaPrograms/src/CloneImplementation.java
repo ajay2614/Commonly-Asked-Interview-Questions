@@ -1,3 +1,76 @@
+/*
+==================== CLONEABLE INTERFACE & OBJECT.CLONE() ====================
+
+1️⃣ Cloneable Interface
+- Marker interface (no methods).
+- Signals that the class allows cloning via Object.clone().
+- If not implemented, calling super.clone() throws CloneNotSupportedException at runtime.
+
+2️⃣ Object.clone() method
+- Protected native method in java.lang.Object:
+      protected native Object clone() throws CloneNotSupportedException;
+- Performs shallow copy of the object.
+- Does NOT call constructors.
+- Checks at runtime if object implements Cloneable:
+      if (!(this instanceof Cloneable)) throw CloneNotSupportedException();
+
+3️⃣ Overriding clone()
+- Typically overridden to make it public and return class type:
+      @Override
+      public MyClass clone() throws CloneNotSupportedException {
+          return (MyClass) super.clone();
+      }
+
+4️⃣ Shallow Copy
+- Copies top-level fields.
+- Nested objects (references) are shared between original and clone.
+- Default behavior of Object.clone().
+- Example:
+      class Employee implements Cloneable {
+          int id;
+          Department dept;
+          public Employee clone() throws CloneNotSupportedException {
+              return (Employee) super.clone(); // shallow copy
+          }
+      }
+- Changing dept in clone affects original.
+
+5️⃣ Deep Copy
+- Creates independent clone including nested objects.
+- Must manually clone nested objects or use copy constructors/serialization.
+- Example using new temp object for nested field:
+      class Employee implements Cloneable {
+          int id;
+          Department dept;
+
+          @Override
+          public Employee clone() throws CloneNotSupportedException {
+              Employee e = (Employee) super.clone();       // shallow copy
+              e.dept = new Department(this.dept.name);     // deep copy
+              return e;
+          }
+      }
+- Now modifying e.dept.name does NOT affect original object.
+
+6️⃣ Manual clone (without super.clone())
+- If you override clone() and don’t call super.clone(), JVM’s internal Cloneable check is skipped.
+- You can manually create and return a new object with copied fields.
+- Example:
+      @Override
+      public MyClass clone() {
+          return new MyClass(this.field1, this.field2);
+      }
+
+7️⃣ Key Points Summary
+- Cloneable → marker interface, enables Object.clone().
+- clone() → shallow copy by default.
+- Deep copy → manually clone nested objects.
+- JVM checks Cloneable at runtime in Object.clone() using instanceof.
+- Overriding clone() gives flexibility to make it public and return your type.
+- Using temp objects for deep copy prevents shared references.
+*/
+
+
 class CloneableClassExample implements Cloneable{
     int i;
     int j;
