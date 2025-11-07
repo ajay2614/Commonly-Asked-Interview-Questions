@@ -117,3 +117,217 @@ map is used for transformation only but flatmap is used for both transformation 
 
 
 Difference between comparator and comparable
+
+
+🧾 Java 8 Key Features & Notes
+
+Major Additions:
+
+Lambda Expressions
+
+Method References
+
+Functional Interfaces
+
+Stream API
+
+Default & Static Methods in Interfaces
+
+Optional Class
+
+Base64 Encode/Decode
+
+Collectors Class
+
+forEach() Method
+
+New Date & Time API
+
+Nashorn JavaScript Engine
+
+⚙️ Lambda Expressions
+
+Anonymous functions that can be treated as objects.
+
+Implement functional interfaces (SAM – Single Abstract Method).
+
+Concise functional-style coding.
+
+Example:
+
+@FunctionalInterface
+interface Calculator { int calculate(int a, int b); }
+
+Calculator add = (a, b) -> a + b;
+System.out.println(add.calculate(2, 3)); // Output: 5
+
+
+Anonymous Function:
+
+A function not bound to a name.
+
+Can access variables from enclosing scope.
+
+Lambda expressions are anonymous functions.
+
+⚙️ Method References
+
+Shorter syntax for lambdas that just call an existing method.
+
+Refers to a method without executing it immediately.
+
+Example:
+
+List<Integer> nums = Arrays.asList(1, 2, 3);
+nums.forEach(System.out::println); // Equivalent to nums.forEach(n -> System.out.println(n));
+
+
+Types:
+
+Static method → ClassName::staticMethod
+
+Instance method (specific object) → objRef::instanceMethod
+
+Instance method (any object of class) → ClassName::instanceMethod
+
+Constructor → ClassName::new
+
+Key Point:
+
+Lambda: explicitly calls the method
+Method Reference: just points to the method; Java passes parameters automatically
+
+⚙️ Functional Interfaces
+
+Interface with one abstract method.
+
+Can have any number of default/static methods.
+
+@FunctionalInterface annotation recommended.
+
+Common Types:
+
+Interface	Input	Output	Use
+Predicate	Yes	Boolean	Filtering/conditions
+Consumer	Yes	None	Perform action
+Function	Yes	Yes	Transform input → output
+Supplier	None	Yes	Supply values
+
+Example:
+
+Predicate<Integer> isEven = n -> n % 2 == 0;
+System.out.println(isEven.test(4)); // true
+
+⚙️ Default & Static Methods in Interfaces
+
+Interfaces can have method bodies with default or static.
+
+Example:
+
+interface Vehicle {
+    default void start() { System.out.println("Starting..."); }
+    static void stop() { System.out.println("Stopped."); }
+}
+
+⚙️ Stream API
+
+Functional-style operations on collections.
+
+Supports: map(), flatMap(), filter(), reduce(), collect(), etc.
+
+Lazy evaluation, parallel processing possible.
+
+Max Example:
+
+int max = Stream.of(1,24,12,15,2)
+                .max(Comparator.comparing(Integer::valueOf))
+                .get();
+
+
+Distinct Example:
+
+List<Integer> li = someList.stream()
+                           .distinct()
+                           .collect(Collectors.toList());
+
+
+map() vs flatMap():
+
+map() → transform single element → single result
+
+flatMap() → transform + flatten nested elements
+
+Example:
+
+// map()
+List<String> cities = employees.stream()
+                               .map(e -> e.getCity())
+                               .collect(Collectors.toList());
+
+// flatMap()
+Set<String> allCities = employees.stream()
+                                 .flatMap(e -> e.getCities().stream())
+                                 .collect(Collectors.toSet());
+
+⚙️ forEach()
+
+Default method in Iterable and Stream.
+
+Accepts a Consumer functional interface.
+
+Example:
+
+list.forEach(item -> System.out.println(item));
+
+⚙️ Optional Class
+
+Represents a value that may or may not be present.
+
+Helps avoid NullPointerException.
+
+Example:
+
+Optional<String> name = Optional.ofNullable(null);
+System.out.println(name.orElse("Default Name")); // Default Name
+
+⚙️ New Date & Time API
+
+Packages: LocalDate, LocalTime, LocalDateTime, ZonedDateTime
+
+Replaces Date and Calendar (thread-safe, well-designed, supports zones).
+
+Example:
+
+LocalDate date = LocalDate.now();
+LocalDateTime dateTime = LocalDateTime.now();
+
+⚙️ Nashorn JavaScript Engine
+
+Java 8 introduced JS engine inside Java.
+
+Allows executing JavaScript code in Java applications.
+
+⚙️ Base64 Encode/Decode
+
+Built-in utility in java.util.Base64.
+
+Example:
+
+String encoded = Base64.getEncoder().encodeToString("Hello".getBytes());
+System.out.println(encoded);
+
+
+✅ Summary:
+Java 8 = Shift from OOP → Functional style
+
+Lambda → concise functions
+
+Method Reference → shorthand for lambdas
+
+Streams → functional collection processing
+
+Optional → safer null handling
+
+Default methods → interface evolution
+
+Date API → better date/time handling
