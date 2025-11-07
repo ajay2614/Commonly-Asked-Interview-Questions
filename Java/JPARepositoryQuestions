@@ -172,3 +172,66 @@ Difference between JPA and Hibernate
 JPA is specification and hibernate is implementation, Hibernate is Object Relation Mapping framework or tool
 that implements and has ways to implement JPA
 
+🧾 Hibernate vs JPA vs Spring Data JPA
+⚙️ 1. Hibernate
+
+Hibernate is an ORM (Object-Relational Mapping) framework.
+
+It maps Java objects → database tables and handles SQL generation, caching, and relationships.
+
+It is a standalone implementation, independent of Spring (though can be integrated).
+
+Provides its own API (e.g. Session, Query, etc.)
+
+Used heavily with Spring MVC before JPA came along.
+
+🧠 Example:
+
+Session session = sessionFactory.openSession();
+Transaction tx = session.beginTransaction();
+session.save(user);
+tx.commit();
+
+⚙️ 2. JPA (Java Persistence API)
+
+JPA is not a framework, it’s a specification (interface) provided by Java.
+
+It defines how ORM should work — like rules and contracts.
+
+Hibernate implements JPA, along with others like EclipseLink, OpenJPA, etc.
+
+So when you use JPA, you write standard JPA code, and Hibernate runs behind the scenes as the provider.
+
+Reduces dependency on one ORM provider (you can switch from Hibernate to others easily).
+
+🧠 Example:
+
+@Entity
+public class User {
+    @Id
+    private int id;
+    private String name;
+}
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {}
+
+⚙️ 3. Spring Data JPA
+
+Built on top of JPA to make data access even easier.
+
+You don’t have to write boilerplate JPA code (like EntityManager, Query, etc.).
+
+Provides ready-made repository interfaces such as JpaRepository, CrudRepository, etc.
+
+Automatically creates implementation for basic CRUD operations at runtime.
+
+Works seamlessly with Spring Boot (auto-configuration, dependency injection, etc.).
+
+Hibernate is still used under the hood as the default JPA provider in most Spring Boot apps.
+
+🧠 Example:
+
+public interface UserRepository extends JpaRepository<User, Integer> {
+    List<User> findByName(String name);
+}
