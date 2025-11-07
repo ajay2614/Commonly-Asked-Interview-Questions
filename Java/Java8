@@ -331,3 +331,39 @@ Optional → safer null handling
 Default methods → interface evolution
 
 Date API → better date/time handling
+
+
+
+==================== FUNCTIONAL INTERFACE & COMPARATOR ====================
+
+1️⃣ Functional Interface Rule
+- Must have exactly one abstract method.
+- Can have default, static, or private methods (do not count as abstract).
+
+2️⃣ Comparator as Functional Interface
+- Single abstract method: compare(T o1, T o2)
+- Default/static methods allowed:
+      - static Comparator.comparingInt(ToIntFunction keyExtractor)
+      - default Comparator<T> reversed()
+      - etc.
+- These helper methods do NOT violate functional interface rule.
+
+3️⃣ How comparingInt works
+- Example:
+      Comparator<Employee> cmp = Comparator.comparingInt(e -> e.getSalary());
+- What happens:
+      1. comparingInt() is a static helper → returns a Comparator object
+      2. Lambda (e -> e.getSalary()) provides implementation for the single abstract method compare()
+      3. Default/static methods are just utilities → they do not count as abstract
+
+4️⃣ Key Insight
+- Functional interface ≠ only 1 method in total
+- Only 1 abstract method is required
+- Default/static methods can exist as helpers
+- Lambda only implements the single abstract method
+
+5️⃣ Analogy
+- Comparator = blueprint
+- compare() = mandatory abstract method → lambda fills this
+- comparingInt(), reversed(), etc. = optional helpers
+- Allows concise, readable code without breaking functional interface rules
